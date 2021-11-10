@@ -15,6 +15,8 @@ class CodeWriter(object):
 		self.path_file = project_path+'/'+file_name
 		self.user_name = user_name
 		self.imports = imports
+		self._tab = '	'
+
 
 
 	def init_file(self):
@@ -37,30 +39,31 @@ class CodeWriter(object):
 
 
 	def _header_str(self):
-		return "# Creation date {} \n # Author {}".format(datetime.datetime.now().isoformat(timespec='minutes'),\
-			self.user_name)
+		return "# Creation date {} \n# Author {}"\
+		.format(datetime.datetime.now().isoformat(timespec='minutes'),self.user_name)
 
 	def _imports_str(self):
-		imports_str = ""
+		imports_str = "\n\n"
 		for this_import in self.imports:
 			imports_str += '\nimport {}'.format(this_import)
 		return imports_str
 
 	def _class_declaration_str(self):
 		if self.parent_class_name == None:
-			return '''\n\nclass {}(object): \n """docstring for {}"""'''.format(self.class_name, self.class_name)
+			return '''\n\nclass {}(object): \n{}{}"""docstring for {}"""'''\
+					.format(self.class_name, self._tab, self._tab, self.class_name)
 		else:
-			return '''\n\nclass {}({}): \n """docstring for {}"""'''\
-					.format(self.class_name, self.parent_class_name, self.class_name)
+			return '''\n\nclass {}({}): \n{}{}"""docstring for {}"""'''\
+					.format(self.class_name, self.parent_class_name, self._tab,self._tab,  self.class_name)
 
 
 	def _init_str(self):
-		def_init_func = "\ndef __init__(self,"
+		def_init_func = "\n\n{}def __init__(self,".format(self._tab)
 		init_attr = ""
 		for this_input in inputs:
 			def_init_func += " {},".format(this_input)
 		for attr in self.attributes:
-			init_attr += "\nself.{} = {}".format(attr, attr)
+			init_attr += "\n{}self.{} = {}".format(self._tab, attr, attr)
 		def_init_func = def_init_func[:-1]+'):'
 
 		return def_init_func+init_attr
@@ -68,10 +71,10 @@ class CodeWriter(object):
 	def _empty_methods_str(self):
 		methods_str = ""
 		for method, arguments in methods.items():
-			methods_str += '\ndef {}(self,'.format(method)
+			methods_str += '\n\n{}def {}(self,'.format(self._tab, method)
 			for argument in arguments:
 				methods_str += ' {},'.format(argument)
-			methods_str= methods_str[:-1]+'):\npass'
+			methods_str= methods_str[:-1]+'):\n{}{}pass'.format(self._tab, self._tab)
 		return methods_str
 
 
