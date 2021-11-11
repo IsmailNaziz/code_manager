@@ -11,26 +11,27 @@ class VEnvManager(object):
 
 
 	def create_venv(self):
-		command = "python3 -m venv {}".format(self.project_path+'/'+self.venv_name).split(' ')
+		command = "python3 -m venv {}".format(self.project_path+'/'+self.venv_name)
 		return self._cmd_runner(command)
 
 	def source_venv(self):
-		command = "source {}/bin/activate".format(self.project_path+'/'+self.venv_name).split(' ')
+		command = "source {}/bin/activate".format(self.project_path+'/'+self.venv_name)
 		return self._cmd_runner(command)
 
 	def install_lib(self, lib):
-		command = "python3 -m pip install {}".format(lib).split(' ')
+		command = "python3 -m pip install {}".format(lib)
 		return self._cmd_runner(command)
 
 	def install_libs(self, lib):
 		for lib in libs:
-			command = "python3 -m pip install {}".format(lib).split(' ')
+			command = "python3 -m pip install {}".format(lib)
 			if not(self._cmd_runner(command)):
 				return 0, lib
 		return 1
 		
 	@classmethod
 	def _cmd_runner(cls, command):
+		command_list = command.split(' ')
 		try:
 			subprocess.run(command)
 		except Exception as e:

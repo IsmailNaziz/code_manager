@@ -58,6 +58,7 @@ class CodeWriter(object):
 
 
 	def _init_str(self):
+		# add inheritance if parent class found
 		def_init_func = "\n\n{}def __init__(self,".format(self._tab)
 		init_attr = ""
 		for this_input in inputs:

@@ -1,0 +1,1 @@
+one parent class supported
