@@ -1,5 +1,4 @@
 import subprocess
-import os
 
 class VEnvManager(object):
 	"""docstring for VEnvManager
@@ -22,7 +21,7 @@ class VEnvManager(object):
 		command = "python3 -m pip install {}".format(lib)
 		return self._cmd_runner(command)
 
-	def install_libs(self, lib):
+	def install_libs(self, libs):
 		for lib in libs:
 			command = "python3 -m pip install {}".format(lib)
 			if not(self._cmd_runner(command)):
@@ -33,7 +32,7 @@ class VEnvManager(object):
 	def _cmd_runner(cls, command):
 		command_list = command.split(' ')
 		try:
-			subprocess.run(command)
+			subprocess.run(command_list)
 		except Exception as e:
 			return 0
 		return 1
